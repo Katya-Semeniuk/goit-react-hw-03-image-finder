@@ -16,6 +16,7 @@ class App extends Component{
     this.setState({ name: searchName });
   };
   render() {
+    const { name } = this.state;
      return (
     <div
       // style={{
@@ -28,7 +29,7 @@ class App extends Component{
       // }}
     > 
          <Searchbar onSubmit={this.handleFormSubmit} />
-         <ImageGallery >
+         <ImageGallery name={name} >
            <ImageGalleryItem/>
          </ImageGallery>
          <ToastContainer autoClose={3000} theme="colored" />

@@ -3,10 +3,14 @@ import './ImageGalleryItem.css';
 // import PropTypes from 'prop-types';
 
 
-const ImageGalleryItem =()=>  { 
+const ImageGalleryItem = ({ hits }) => { 
         return(
             <li className="gallery_item">
-            <img src="" alt=""  className="gallery_image"/>  
+                {hits.map(({ id, webformatURL, largeImageURL }) => (
+                <img key={id} src={webformatURL} alt="" className="gallery_image" /> )
+                
+                )}
+                 
         </li>
     )
     

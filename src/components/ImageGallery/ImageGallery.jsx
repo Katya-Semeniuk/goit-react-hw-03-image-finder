@@ -13,27 +13,27 @@ class ImageGallery extends Component {
     }
 
  componentDidUpdate(prevProps, prevState) { 
-    const prevName = prevProps.name;
-    const nextName = this.props.name;  
+  const prevName = prevProps.name;
+  const nextName = this.props.name; 
+  const url = `${BASE_URL}/?q=${nextName}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`; 
 
     if (prevName !== nextName) {
-const url = `${BASE_URL}/?q=${nextName}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
     fetch(url)
       .then(res => res.json())
         .catch(error => this.setState({ error }))
-        // .then(pictures => this.setState({pictures}));
-    .then(pictures => console.log);
+        .then(pictures => this.setState({pictures}));
+        // .then(pictures => console.log(pictures))
 }
     };
-    
     
     // if (this.state.pictures !== null) {
         //     const { hits } = this.state.pictures;
         //     const searchedPictures = hits;
         // }
     render() {
+        const { pictures } = this.state;
         return (
-        <ul className="gallery">
+            <ul pictures={pictures} className="gallery">
         </ul>
     )
     }
