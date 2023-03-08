@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './ImageGallery.css';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
-import Searchbar from '../Searchbar/Searchbar';
 import Button from '../Button/Button';
 import Loader from '../Loader/Loader';
 import pictureApi from '../services/picture-api';
@@ -35,16 +34,6 @@ class ImageGallery extends Component {
     }
   }
 
-  handleFormSubmit = searchName => {
-    this.setState({
-      name: searchName,
-      page: 1,
-      pictures: [],
-      error: null,
-      status: '',
-    });
-  };
-
   openModal = () => {};
 
   loadMore = () => {
@@ -63,26 +52,26 @@ class ImageGallery extends Component {
       return <p>{error.message}</p>;
     }
 
-    if (pictures.length > 0) {
-      this.setState(status === 'resolved');
-      return (
-        <>
-          <Searchbar onSubmit={this.handleFormSubmit} />
-          <ul className="gallery">
-            {pictures.map(({ id, webformatURL, largeImageURL }) => {
-              return (
-                <ImageGalleryItem
-                  key={id}
-                  webformatURL={webformatURL}
-                  largeImageURL={largeImageURL}
-                  id={id}
-                />
-              );
-            })}
-          </ul>
-          <Button onLoadMore={this.loadMore} />
-        </>
-      );
+    if (status === 'resolved') {
+      if (pictures.length > 0) {
+        return (
+          <>
+            <ul className="gallery">
+              {pictures.map(({ id, webformatURL, largeImageURL }) => {
+                return (
+                  <ImageGalleryItem
+                    key={id}
+                    webformatURL={webformatURL}
+                    largeImageURL={largeImageURL}
+                    id={id}
+                  />
+                );
+              })}
+            </ul>
+            <Button onLoadMore={this.loadMore} />
+          </>
+        );
+      }
     }
   }
 }
