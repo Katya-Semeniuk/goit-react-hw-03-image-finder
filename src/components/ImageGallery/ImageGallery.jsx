@@ -1,43 +1,90 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import './ImageGallery.css';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import Searchbar from '../Searchbar/Searchbar';
+import Button from '../Button/Button';
+import Loader from '../Loader/Loader';
+import pictureApi from '../services/picture-api';
+
 // import PropTypes from 'prop-types';
-const BASE_URL = 'https:pixabay.com/api';
-const API_KEY = '32332367-6643b5098e6f829f8817b33dd';
 
 class ImageGallery extends Component {
+  state = {
+    name: '',
+    page: 1,
+    pictures: [],
+    error: null,
+    status: '',
+  };
 
-    state = {
-        page: 1,
-        pictures: [],
-        error: null,
+  componentDidUpdate(prevProps, prevState) {
+    const prevName = prevProps.name;
+    const nextName = this.props.name;
+
+    if (prevName !== nextName || prevState.page !== this.state.page) {
+      this.setState({ status: 'pending' });
+      pictureApi
+        .fetchPicture(nextName)
+        .then(({ hits, total, totalHits }) =>
+          this.setState(prevState => ({
+            status: 'resolved',
+            pictures: [...prevState.pictures, ...hits],
+          }))
+        )
+        .catch(error => this.setState({ error, status: 'rejectsd' }));
+    }
+  }
+
+  handleFormSubmit = searchName => {
+    this.setState({
+      name: searchName,
+      page: 1,
+      pictures: [],
+      error: null,
+      status: '',
+    });
+  };
+
+  openModal = () => {};
+
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+    console.log('load more');
+  };
+
+  render() {
+    const { pictures, status, error } = this.state;
+
+    if (status === 'pending') {
+      return <Loader />;
     }
 
- componentDidUpdate(prevProps, prevState) { 
-  const prevName = prevProps.name;
-  const nextName = this.props.name; 
-  const url = `${BASE_URL}/?q=${nextName}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`; 
+    if (status === 'rejectsd') {
+      return <p>{error.message}</p>;
+    }
 
-    if (prevName !== nextName) {
-    fetch(url)
-      .then(res => res.json())
-        .catch(error => this.setState({ error }))
-        .then(pictures => this.setState({pictures}));
-        // .then(pictures => console.log(pictures))
+    if (pictures.length > 0) {
+      this.setState(status === 'resolved');
+      return (
+        <>
+          <Searchbar onSubmit={this.handleFormSubmit} />
+          <ul className="gallery">
+            {pictures.map(({ id, webformatURL, largeImageURL }) => {
+              return (
+                <ImageGalleryItem
+                  key={id}
+                  webformatURL={webformatURL}
+                  largeImageURL={largeImageURL}
+                  id={id}
+                />
+              );
+            })}
+          </ul>
+          <Button onLoadMore={this.loadMore} />
+        </>
+      );
+    }
+  }
 }
-    };
-    
-    // if (this.state.pictures !== null) {
-        //     const { hits } = this.state.pictures;
-        //     const searchedPictures = hits;
-        // }
-    render() {
-        const { pictures } = this.state;
-        return (
-            <ul pictures={pictures} className="gallery">
-        </ul>
-    )
-    }
-};
-
 
 export default ImageGallery;

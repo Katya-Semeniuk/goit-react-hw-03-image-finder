@@ -2,11 +2,11 @@ import React from 'react';
 import './Modal.css';
 // import PropTypes from 'prop-types';
 
-const Modal = () => { 
+const Modal = ({largeImageURL}) => { 
     return (
 <div className='overlay'>
   <div className='modal'>
-    <img src="" alt="" />
+    <img src={largeImageURL} alt="" />
   </div>
 </div>
     )
