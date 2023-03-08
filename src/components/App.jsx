@@ -7,15 +7,23 @@ import { ToastContainer } from 'react-toastify';
 class App extends Component {
   state = {
     name: '',
+    page: 1,
+    pictures: [],
+    error: null,
+    status: '',
   };
 
   handleFormSubmit = searchName => {
     this.setState({
       name: searchName,
+      page: 1,
+      pictures: [],
+      error: null,
+      status: '',
     });
   };
   render() {
-    // const { name } = this.state;
+    const { name, page, pictures, error, status } = this.state;
     return (
       <div
       // style={{
@@ -28,7 +36,13 @@ class App extends Component {
       // }}
       >
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery />
+        <ImageGallery
+          name={name}
+          page={page}
+          pictures={pictures}
+          error={error}
+          status={status}
+        />
         <ToastContainer autoClose={3000} theme="colored" />
       </div>
     );
