@@ -3,6 +3,7 @@ import './ImageGallery.css';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Button from '../Button/Button';
 import Loader from '../Loader/Loader';
+import Modal from '../Modal/Modal';
 import pictureApi from '../services/picture-api';
 
 // import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ class ImageGallery extends Component {
     pictures: [],
     error: null,
     status: '',
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,15 +36,19 @@ class ImageGallery extends Component {
     }
   }
 
-  openModal = () => {};
-
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
     console.log('load more');
   };
 
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
   render() {
-    const { pictures, status, error } = this.state;
+    const { pictures, status, error, showModal } = this.state;
 
     if (status === 'pending') {
       return <Loader />;
@@ -69,6 +75,14 @@ class ImageGallery extends Component {
               })}
             </ul>
             <Button onLoadMore={this.loadMore} />
+            <button type="button" onClick={this.toggleModal}>
+              Modal Button
+            </button>
+            {showModal && (
+              <Modal onClose={this.toggleModal}>
+                <img src="" alt="" />
+              </Modal>
+            )}
           </>
         );
       }
