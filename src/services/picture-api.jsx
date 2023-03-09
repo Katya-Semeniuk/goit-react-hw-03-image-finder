@@ -7,11 +7,12 @@ function fetchPicture(name, page) {
     if (response.ok) {
       return response.json();
     }
-    return Promise.reject(new Error(`Any picture with this ${name}`));
+    return Promise.reject(new Error(`Any picture with name ${name}`));
   });
 }
 
 const api = {
   fetchPicture,
 };
+
 export default api;
