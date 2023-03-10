@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import './Modal.css';
+
 // import PropTypes from 'prop-types';
 const modalRoot = document.querySelector('#modal-root');
 
@@ -17,8 +18,8 @@ class Modal extends Component {
 
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
-      console.log('close please modal');
+      this.props.onCloseModal();
+      console.log('onCloseModal');
     }
   };
 
@@ -26,7 +27,7 @@ class Modal extends Component {
     // console.log('куди клацнули', e.target);
     // console.log('на чому спрацював обробник', e.currentTarget);
     if (e.target === e.currentTarget) {
-      this.props.onClose();
+      this.props.onCloseModal();
     }
   };
 

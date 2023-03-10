@@ -3,9 +3,13 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 import Loader from './Loader/Loader';
 import Modal from './Modal/Modal';
+import Button from './Button/Button';
 import pictureApi from '../services/picture-api';
 import { ToastContainer } from 'react-toastify';
+// import * as basicLightbox from 'basiclightbox';
 // import PropTypes from 'prop-types';
+
+// const instance = basicLightbox.create(document.querySelector('template'));
 
 class App extends Component {
   state = {
@@ -16,14 +20,15 @@ class App extends Component {
     status: '',
     showModal: false,
   };
-  componentDidUpdate(prevProps, prevState) {
-    const prevName = prevProps.name;
-    const nextName = this.props.name;
 
-    if (prevName !== nextName || prevState.page !== this.state.page) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.name !== this.state.name ||
+      prevState.page !== this.state.page
+    ) {
       this.setState({ status: 'pending' });
       pictureApi
-        .fetchPicture(nextName)
+        .fetchPicture(this.state.name)
         .then(({ hits, total, totalHits }) =>
           this.setState(prevState => ({
             status: 'resolved',
@@ -50,31 +55,42 @@ class App extends Component {
     console.log('load more');
   };
 
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
+  openModal = () => {
+    console.log('modal window is opened');
+    this.setState({ showModal: true });
+    // instance.show();
   };
 
+  closeModal = () => {
+    console.log('modal window is closed');
+    this.setState({ showModal: false });
+  };
+
+  // toggleModal = () => {
+  //   console.log('modal window');
+  //   this.setState(({ showModal }) => ({
+  //     showModal: !showModal,
+  //   }));
+  // };
+
   render() {
-    const { pictures, status, error, showModal } = this.state;
+    const { name, pictures, status, error, showModal } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === 'pending' && <Loader />}
         {status === 'rejectsd' && <p>{error.message}</p>}
         {status === 'resolved' && pictures.length > 0 && (
-          <ImageGallery pictures={pictures}>
-            <button type="button" onClick={this.toggleModal}>
-              Modal Button
-            </button>
+          <ImageGallery pictures={pictures} onOpenModal={this.openModal}>
             {showModal && (
-              <Modal onClose={this.toggleModal}>
+              <Modal onCloseModal={this.closeModal}>
                 <img src="" alt="" />
               </Modal>
             )}
           </ImageGallery>
         )}
+
+        {name !== '' && <Button onLoadMore={this.loadMore} />}
         <ToastContainer autoClose={3000} theme="colored" />
       </div>
     );
