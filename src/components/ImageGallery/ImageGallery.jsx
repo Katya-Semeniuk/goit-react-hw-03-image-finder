@@ -1,17 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './ImageGallery.css';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
-// import PropTypes from 'prop-types';
-
-const ImageGallery = ({ pictures, onOpenModal }) => {
+const ImageGallery = ({ pictures }) => {
   return (
     <>
       <ul className="gallery">
         {pictures.map(({ id, webformatURL, largeImageURL }) => {
           return (
             <ImageGalleryItem
-              onOpenModal={onOpenModal}
               key={id}
               webformatURL={webformatURL}
               largeImageURL={largeImageURL}
@@ -22,6 +20,10 @@ const ImageGallery = ({ pictures, onOpenModal }) => {
       </ul>
     </>
   );
+};
+
+ImageGallery.propTypes = {
+  pictures: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 export default ImageGallery;

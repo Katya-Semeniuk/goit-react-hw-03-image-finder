@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 import Loader from './Loader/Loader';
-import Modal from './Modal/Modal';
+
 import Button from './Button/Button';
 import pictureApi from '../services/picture-api';
-import { ToastContainer } from 'react-toastify';
-// import * as basicLightbox from 'basiclightbox';
-// import PropTypes from 'prop-types';
-
-// const instance = basicLightbox.create(document.querySelector('template'));
 
 class App extends Component {
   state = {
@@ -18,7 +15,6 @@ class App extends Component {
     pictures: [],
     error: null,
     status: '',
-    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,7 +42,6 @@ class App extends Component {
       pictures: [],
       error: null,
       status: '',
-      showModal: false,
     });
   };
 
@@ -55,41 +50,16 @@ class App extends Component {
     console.log('load more');
   };
 
-  openModal = () => {
-    console.log('modal window is opened');
-    this.setState({ showModal: true });
-    // instance.show();
-  };
-
-  closeModal = () => {
-    console.log('modal window is closed');
-    this.setState({ showModal: false });
-  };
-
-  // toggleModal = () => {
-  //   console.log('modal window');
-  //   this.setState(({ showModal }) => ({
-  //     showModal: !showModal,
-  //   }));
-  // };
-
   render() {
-    const { name, pictures, status, error, showModal } = this.state;
+    const { name, pictures, status, error } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === 'pending' && <Loader />}
         {status === 'rejectsd' && <p>{error.message}</p>}
         {status === 'resolved' && pictures.length > 0 && (
-          <ImageGallery pictures={pictures} onOpenModal={this.openModal}>
-            {showModal && (
-              <Modal onCloseModal={this.closeModal}>
-                <img src="" alt="" />
-              </Modal>
-            )}
-          </ImageGallery>
+          <ImageGallery pictures={pictures} />
         )}
-
         {name !== '' && <Button onLoadMore={this.loadMore} />}
         <ToastContainer autoClose={3000} theme="colored" />
       </div>

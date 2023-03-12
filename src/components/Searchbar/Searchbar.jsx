@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import './Searchbar.css';
-import SearchIcon from '@mui/icons-material/Search';
+// import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchIcon from '@mui/icons-material/Search';
+import './Searchbar.css';
+
 // import axios from "axios";
-// import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
   state = {
@@ -67,18 +68,3 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
-
-// ContactList.propTypes = {
-//    arrayContact:PropTypes.arrayOf(PropTypes.shape({
-//     id:  PropTypes.oneOfType([ PropTypes.string,PropTypes.number]),
-//     name: PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
-//     number: PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
-//     })),
-// }
-
-// Filter.propTypes = {
-//     value:PropTypes.oneOfType([
-//     PropTypes.string,
-//     PropTypes.number,
-//   ]),
-// }
