@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ImageGalleryItem.css';
-// import * as basicLightbox from 'basiclightbox';
-import Modal from '../Modal/Modal';
 
-// const instance = basicLightbox.create(document.querySelector('template'));
-// instance.show();
+import Modal from '../Modal/Modal';
 
 class ImageGalleryItem extends Component {
   state = {

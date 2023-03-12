@@ -24,7 +24,7 @@ class App extends Component {
     ) {
       this.setState({ status: 'pending' });
       pictureApi
-        .fetchPicture(this.state.name)
+        .fetchPicture(this.state.name, this.state.page)
         .then(({ hits, total, totalHits }) =>
           this.setState(prevState => ({
             status: 'resolved',
